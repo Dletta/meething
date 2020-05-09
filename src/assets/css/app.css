@@ -2,9 +2,10 @@
 
 body {
   color: #FFF;
-  background: url("../images/background.png")no-repeat center center fixed; 
-  background-image :  url("../images/background.png");
-  -webkit-background-image: url("../images/background.png");
+  /*background: url("../images/background.png")no-repeat center center fixed;
+  background-image :  url("../images/background.png");*/
+  background-color: rgb(14, 11, 55);
+  /*-webkit-background-image: url("../images/background.png");*/
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -68,13 +69,13 @@ body {
 
 .remote-video {
   position: relative;
-  object-fit: cover !important; 
+  object-fit: cover !important;
   height: 100%;
   width: 100%;
-  border-radius: 6px 6px 0px 0px;
+  border-radius: 10px 10px 10px 10px;
   max-height: 80vh;
   background:#14101bbb ;
-  
+
 }
 
 .clipped {
@@ -132,6 +133,7 @@ body {
     right: 0;
     overflow-y: auto;
     overflow-x: hidden;
+    border-left: 1px solid white;
     transition: all 0.3s ease !important;
     -webkit-transition: all 0.3s ease !important;
     -moz-transition: all 0.3s ease !important;
@@ -155,7 +157,7 @@ body {
     bottom: 90px;
     margin-bottom: 0px;
   }
-} 
+}
 @media only screen and (max-width: 1767px) {
   .chat-col {
     right: -100vw;
@@ -192,11 +194,11 @@ body {
     bottom: 90px;
     margin-bottom: 0px;
   }
-} 
+}
 
 .bg-info {
   background-color: #c2c2c222 !important;
-  
+
 }
 
 .bg-green {
@@ -277,7 +279,7 @@ cursor: crosshair
    font-size:22px;
    margin:0 auto;
     width:250px;
-  
+
  }
  #create-room:hover{
    background:#5610c5;
@@ -325,10 +327,8 @@ cursor: crosshair
   font-size:13px;
 }
 .toolbox{
-  background:#14101bbb ;
-  
   position:relative;
-  top:-6px;
+  top:-50px;
   height:35px;
   left:0px;
   display:grid;
@@ -364,11 +364,11 @@ margin-left:10px;
   box-shadow: 1px -1px 2px #14101bbb;
   color: rgb(255, 255, 255);
   opacity:.5;
-  transition:.3s all; 
+  transition:.3s all;
   margin:5px;
   background:#45257cbb;
-  border-radius:10px 10px 0px 0px;
- 
+  border-radius:10px 10px 10px 10px;
+
 }
 .widget-button:hover{
   color:rgb(255, 255, 255);
@@ -445,4 +445,9 @@ meter {
 
 .grid-bottom {
   margin-top: -25px;
+}
+
+.align-center {
+  align-self: center;
+  align-content: center;
 }

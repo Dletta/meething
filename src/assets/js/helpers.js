@@ -1,8 +1,8 @@
 import config from './config.js';
-var cache, 
-  mutedStream, 
-  ac, 
-  mediaStreamDestination, 
+var cache,
+  mutedStream,
+  ac,
+  mediaStreamDestination,
   mediaRecorder,
   MutedAudioTrack,
   MutedVideoTrack,
@@ -21,7 +21,7 @@ var cache,
       navigator.msGetUserMedia
     );
   },
-  
+
   typeOf = function typeOf(o) {
     return Object.prototype.toString
       .call(o).match(/(\w+)\]/)[1].toLowerCase();
@@ -79,33 +79,33 @@ var cache,
   canCaptureAudio = ('MediaStreamAudioDestinationNode' in window) ? true : false,
   canSelectAudioDevices = ('sinkId' in HTMLMediaElement.prototype) ? true : false,
   canCreateMediaStream = ('MediaStream' in window) ? true : false;
-  
+
   function getDevices() {
     return new Promise(async(resolve,reject)=>{
       if(!navigator.mediaDevices || typeof navigator.mediaDevices.enumerateDevices != "function") return reject('no mediaDevices');
       let devices = await navigator.mediaDevices.enumerateDevices();
       let grouped = {};
       for (let i = 0; i !== Object.keys(devices).length; ++i) {
-        let asLength=0,aoLength=0,vsLength=0,oLength=0; 
+        let asLength=0,aoLength=0,vsLength=0,oLength=0;
         const deviceInfo = devices[i];
         if (deviceInfo.kind === 'audioinput') {
-          if(!grouped['as']) { 
+          if(!grouped['as']) {
             grouped['as'] = {};
-          } 
+          }
           let label = deviceInfo.label || `Mic ${asLength + 1}`;
           grouped['as'][label] = deviceInfo;
           asLength++;
         } else if (deviceInfo.kind === 'audiooutput') {
-          if(!grouped['ao']) { 
+          if(!grouped['ao']) {
             grouped['ao'] = {};
-          } 
+          }
           let label = deviceInfo.label || `Speaker ${aoLength + 1}`;
           grouped['ao'][label] = deviceInfo;
           aoLength++;
         } else if (deviceInfo.kind === 'videoinput') {
-          if(!grouped['vs']) { 
+          if(!grouped['vs']) {
             grouped['vs'] = {};
-          } 
+          }
           let label = deviceInfo.label || `Cam ${vsLength + 1}`;
           grouped['vs'][label] = deviceInfo;
           vsLength++;
@@ -206,10 +206,10 @@ if (canCreateMediaStream && canCaptureCanvas) {
   MutedStream = (videoOpts, audioOpts) =>
     new MediaStream([MutedVideoTrack(videoOpts), MutedAudioTrack(audioOpts)]);
 } else {
-  
+
   console.warn("no MediaStream constructor, we're IE/Edge/Safari");
   // LOAD VIDEO
-  var mediaSource = new MediaSource(), 
+  var mediaSource = new MediaSource(),
     source,
     tmp = document.createElement("video");
   if(isOldEdge){
@@ -296,8 +296,8 @@ export default {
   },
   getOrientation(){
     if(window.innerHeight && window.innerWidth){
-      if(window.innerHeight > window.innerWidth ) return "portrait"; 
-      else return "landscape"; 
+      if(window.innerHeight > window.innerWidth ) return "portrait";
+      else return "landscape";
     } else if (window.matchMedia) { // we shouldn't reach here but if we do, let's have matchMedia do the work
       var mql = window.matchMedia("(orientation: portrait)");
       if(mql && mql.matches) return "portrait";
@@ -523,7 +523,7 @@ export default {
   },
 
   addVideoElementEvent(elem, type = "pip") {
-    if ("pictureInPictureEnabled" in document 
+    if ("pictureInPictureEnabled" in document
       && type == "pip") {
       elem.addEventListener("dblclick", (e) => {
         e.preventDefault();
@@ -609,10 +609,10 @@ export default {
     // video element
     var videohtml = `<video id="${partnerName}-video" autoplay playsinline>
     <source src="/assets/video/muted.webm" type="video/webm">
-    <source src="/assets/video/muted.mp4" type="video/mp4">  
+    <source src="/assets/video/muted.mp4" type="video/mp4">
     <source src="/assets/video/muted.ogg" type="video/ogv">
     </video>`;
-    var videoParent = document.createElement('div.offscreen'); 
+    var videoParent = document.createElement('div.offscreen');
     videoParent.innerHTML = videohtml;
     document.body.appendChild(videoParent);
     let newVid = document.getElementById(partnerName + '-video') || document.createElement("video");
@@ -623,7 +623,7 @@ export default {
     var videoDiv = document.createElement('div');
     videoDiv.id = partnerName
     videoDiv.appendChild(newVid);
-   
+
     //Top toolbox
     var topToolbox = document.createElement("div");
     topToolbox.className = "top-widget-toolbox"
@@ -659,13 +659,13 @@ export default {
     // autopilot button
     var autopilotBtn = this.addButton("auto-pilot-button","widget-button","fas fa-bullhorn")
    // autopilotBtn.addEventListener('click',()=>this.autoPilot(`${partnerName}-widget`));
-   
+
     topToolbox.appendChild(closeButton);
     topToolbox.appendChild(fullscreenBtn);
     topToolbox.appendChild(autopilotBtn);
     var toolbox = document.createElement("div");
     toolbox.className="toolbox";
- 
+
     // bottom toolbox
     var videoToolbox = document.createElement("div");
     videoToolbox.className = 'v-toolbox';
@@ -678,12 +678,12 @@ export default {
     let ogrid = document.createElement("div");
     toolbox.appendChild(topToolbox);
     toolbox.appendChild(videoToolbox);
-  
+
     ogrid.appendChild(videoDiv);
     videoDiv.appendChild(toolbox);
 //ogrid.appendChild(videoToolbox);
-  
-  
+
+
    // ogrid.appendChild(topToolbox);
  // ogrid.appendChild(videoToolbox);
     ogrid.id = partnerName + "-widget";

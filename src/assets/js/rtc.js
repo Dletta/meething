@@ -537,7 +537,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
 function loadModal(modal,createOrJoin,type){
   Object.assign(modal,{__type:type});
-  modal.setContent('<h1 class="mt-3 align-center">Setup your preferences</h1>'+createOrJoin);
+  modal.setContent('<h1 class="mt-3 align-center">Setup</h1>'+createOrJoin);
   modal.addFooterBtn('Reset', 'tingle-btn tingle-btn--default tingle-btn--pull-left mx-auto col-lg-4 col', function(e){
     try { mutedStream = mutedStream ? mutedStream : h.getMutedStream(); } catch(err){ console.warn("error in getting mutedstream",err); }
     ee.emit(type+':cancel',{modal,e});
@@ -946,18 +946,18 @@ function initRTC() {
         h.replaceAudioTrackForPeers(pcMap, muted.getAudioTracks()[0]).then(r => {
           audioMuted = true;
           //localVideo.srcObject = muted; // TODO: Show voice muted icon on top of the video or something
-          e.srcElement.classList.remove("fa-volume-up");
-          e.srcElement.classList.add("fa-volume-mute");
+          e.srcElement.classList.remove("fa-microphone");
+          e.srcElement.classList.add("fa-microphone-slash");
           metaData.sendNotificationData({ username: username, subEvent: "mute", muted: audioMuted });
           h.showNotification("Audio Muted");
-          myStream.getAudioTracks()[0].enabled = !audioMuted; 
+          myStream.getAudioTracks()[0].enabled = !audioMuted;
         });
       } else {
         h.replaceAudioTrackForPeers(pcMap, mine.getAudioTracks()[0]).then(r => {
           audioMuted = false;
           //localVideo.srcObject = mine;
-          e.srcElement.classList.add("fa-volume-up");
-          e.srcElement.classList.remove("fa-volume-mute");
+          e.srcElement.classList.add("fa-microphone");
+          e.srcElement.classList.remove("fa-microphone-slash");
           metaData.sendNotificationData({ username: username, subEvent: "mute", muted: audioMuted });
           h.showNotification("Audio Unmuted");
           myStream.getAudioTracks()[0].enabled = !audioMuted;
