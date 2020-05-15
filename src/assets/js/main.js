@@ -15,9 +15,9 @@ function Mediator () {
   this.DEBUG = true;
   this.TIMEGAP = 6000; //RTC Module?
   this.allUsers = []; // needs to live here
-  this.enableHacks = true; // @jabis what is this?
+  this.enableHacks = false; // @jabis what is this?
   this.meethrix = false; // lives here for now, video module?
-  this.autoload = true; // okay here but likely should go to modal
+  this.autoload = false; // okay here but likely should go to modal
   this.root; //need this initiated as soon as possible
   this.room = ''; // need a random name?
   this.roompass;

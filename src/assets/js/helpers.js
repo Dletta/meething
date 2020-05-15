@@ -469,8 +469,8 @@ export default {
       sdpSemantics: 'unified-plan',
       //iceCandidatePoolSize: 2,
       iceServers: [
-        { urls: ["stun:turn.hepic.tel"] },
-        { urls: ["stun:stun.l.google.com:19302"] },
+        /*{ urls: ["stun:turn.hepic.tel"] },
+        { urls: ["stun:stun.l.google.com:19302"] }, */
         {
           username:
             "meething",

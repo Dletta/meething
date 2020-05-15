@@ -1,7 +1,7 @@
 export default class Modal {
   constructor (mediator) {
     this.mediator = mediator;
-    this.modal;
+    return this;
   }
   // function that creates the modal and then renders it
   createModal () {
@@ -388,7 +388,7 @@ export default class Modal {
     }.bind(this));
     modal.open();
     var sB = document.getElementById('tingleSetupBtn');
-    if(sB) { console.log("clicked It", this.simulateClick(sB))}
+    if(sB && this.mediator.autoload) { console.log("clicked It", this.simulateClick(sB))}
   }
 
   navigatorGotDevices (devices) {
