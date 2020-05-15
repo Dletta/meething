@@ -208,7 +208,8 @@ export default class Connection {
           this.mediator.pcMap.get(data.sender).setRemoteDescription(
             new RTCSessionDescription(data.description)
           );
-        }});
+        }
+      }.bind(this));
 
       document.getElementById("chat-input").addEventListener("keypress", e => {
         if (e.which === 13 && e.target.value.trim()) {
