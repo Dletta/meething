@@ -2,6 +2,7 @@
 import DamEventEmitter from "./emitter.js";
 import Presence from "./presence.js";
 import MetaData from "./metadata.js";
+import EventEmitter from './ee.js';
 let med = null,
   mod = null;
 export default class Connection {
@@ -10,9 +11,11 @@ export default class Connection {
     this.inited = false;
     mod = this;
     return this;
+    this.ee = window.ee = new EventEmitter();
   }
   // for now MCU webRTC, soon need to make SFU here with mode switching
   establish () {
+    debugger
     if(this.inited) return;
     this.inited = true;
     med = this.mediator;
@@ -263,14 +266,14 @@ export default class Connection {
           med.isRecording = true
           e.srcElement.classList.add("text-danger");
           e.srcElement.classList.remove("text-white");
-    med.h.showNotification("Recording Started");
+          med.h.showNotification("Recording Started");
 
         } else {
           med.h.stopRecordAudio()
           med.isRecording = false
           e.srcElement.classList.add("text-white");
           e.srcElement.classList.remove("text-danger");
-    med.h.showNotification("Recording Stopped");
+          med.h.showNotification("Recording Stopped");
         }
         med.metaData.sendNotificationData({ username: med.username, subEvent: "recording", isRecording: med.isRecording })
       });
@@ -463,8 +466,6 @@ export default class Connection {
     med.h.addVideo(partnerName, false);
 
     //TODO: SET THE BELOW TRACK HANDLERS SOMEWHERE IN A BETTER PLACE!
-    //TODO: KNOWN REGRESSION IN THIS BRANCH IS MUTING DOES NOT WORK!
-
     // Q&A: Should we use the existing myStream when available? Potential cause of issue and no-mute
     if (med.screenStream) {
       var tracks = {};
@@ -528,8 +529,7 @@ export default class Connection {
             });
           });
 
-          med.h.setVideoSrc(localVideo, mixstream);
-
+          med.h.setVideoSrc(med.localVideo, mixstream);
           // SoundMeter for Local Stream
           if (med.myStream) {
             // Soundmeter
@@ -719,20 +719,20 @@ export default class Connection {
   sendMsg (msg, local) {
     let med = this.mediator;
     let data = {
-        room: room,
+        room: this.mediator.room,
         msg: msg,
-        sender: username || socketId
+        sender: this.mediator.username || this.mediator.socketId
     };
 
     if (local) {
       // TODO fix this message aka Chat Module
-      if(med.DEBUG) {console.log('sendMsg needs fixing still', msg)}
-        //med.emit("local", data)
+      if(med.DEBUG) {console.log('sendMsg needs fixing still')}
+        this.ee.emit("local", data)
     } else {
-      if(med.DEBUG) {console.log('sendMsg needs fixing still', msg)}
-        //med.emit("tourist", data)
+      if(this.mediator.DEBUG) {console.log('sendMsg needs fixing still')}
+        this.ee.emit("tourist", data)
     }
-    med.damSocket.out(med.room,data);
+    //med.damSocket.out(med.room,data);
   }
 
   setMediaBitrates (sdp) {
