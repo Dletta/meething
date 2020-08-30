@@ -279,34 +279,74 @@ function Mediator() {
   }
 }
 
-// Initialize Mediator
-document.addEventListener('DOMContentLoaded', (event) => {
+/* Create App State for Meething */
 
-  var meething = new Mediator();
-  // TODO delete this after testing
-  window.meething = meething;
-  // Initiate Modules with Mediator
+var meething = {
+  state: 'Loading',
+  mediator: new Mediator(),
+  transitions: {
+    'Loading': {
+      loaded: function (event) {
+        this.changeState('idle');
+        // TODO delete this after testing
+        window.meething = this.mediator;
+        // Initiate Modules with Mediator
+        mGraph = new Graph(this.mediator);
+        mModal = new Modal(this.mediator);
+        mChat = new Chat(this.mediator);
+        mConn = new Conn(this.mediator);
+        mToggles = new Toggles(this.mediator);
+        mUex = new UEX(this.mediator);
+        mPipMode = new PipMode(this.mediator);
+        mGunControl = new GunControl(this.mediator);
+        mEmbed = new Embed(this.mediator);
 
-  mGraph = new Graph(meething);
-  mModal = new Modal(meething);
-  mChat = new Chat(meething);
-  mConn = new Conn(meething);
-  mToggles = new Toggles(meething);
-  mUex = new UEX(meething);
-  mPipMode = new PipMode(meething);
-  mGunControl = new GunControl(meething);
-  mEmbed = new Embed(meething);
+        this.mediator.graph = mGraph;
+        this.mediator.chat = mChat;
+        this.mediator.conn = mConn;
+        this.mediator.modal = mModal;
+        this.mediator.toggles = mToggles;
+        this.mediator.gunControl = mGunControl;
+        this.mediator.uex = mUex;
+        this.mediator.pipMode = mPipMode;
+        this.mediator.embed = mEmbed;
+        console.log('DOM fully loaded and parsed');
+        console.log(this.mediator);
+        this.mediator.ee.emit('stateToIdle');
+        this.mediator.welcomeMat();
+      }
+    },
+    'idle': {
+      success: function () { this.changeState('idle');alert('success') },
+      failure: function () { alert('failed') }
+    },
+    'error': {
+      'retry': function () { alert('error') }
+    }
+  },
+  dispatch (actionName) {
+    return function (data) {
+      var actions = this.transitions[this.state];
+      var action = actions[actionName];
 
-  meething.graph = mGraph;
-  meething.chat = mChat;
-  meething.conn = mConn;
-  meething.modal = mModal;
-  meething.toggles = mToggles;
-  meething.gunControl = mGunControl;
-  meething.uex = mUex;
-  meething.pipMode = mPipMode;
-  meething.embed = mEmbed;
-  console.log('DOM fully loaded and parsed');
-  meething.welcomeMat();
+      if(action) {
+        action.apply(meething, data);
+      }
+    }.bind(this)
+  },
+  dispatchInt (actionName, data) {
+    var actions = this.transitions[this.state];
+    var action = actions[actionName];
 
-});
+    if(action) {
+      if(!data){data = ''}
+      action.apply(meething, data);
+    }
+  },
+  changeState (newState) {
+    this.state = newState;
+  }
+}
+
+// Initialize loaded state
+document.addEventListener('DOMContentLoaded', meething.dispatch('loaded'));
