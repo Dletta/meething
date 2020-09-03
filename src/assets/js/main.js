@@ -314,14 +314,20 @@ var meething = {
         console.log(this.mediator);
         this.mediator.ee.emit('stateToIdle');
         this.mediator.welcomeMat();
+        //TODO initiate sub statemachine for video track and audio track
       }
     },
     'idle': {
-      success: function () { this.changeState('idle');alert('success') },
-      failure: function () { alert('failed') }
+      startCall: function () {
+        this.changeState('connecting');
+        // TODO, tell UI to switch to Room Waiting
+        // TODO, initiate sub statemachine for connection to SFU
+        // TODO, Mesh should have a state for each connection?
+      },
+      reset: function () {  }
     },
-    'error': {
-      'retry': function () { alert('error') }
+    'connecting': {
+      retry: function () { alert('error') }
     }
   },
   dispatch (actionName) {
